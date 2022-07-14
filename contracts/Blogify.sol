@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 import "./libraries/Base64.sol";
 
-import {DataTypes} from "./types/DataTypes.sol";
+import { DataTypes } from "./DataTypes.sol";
 
 contract Blogify is ERC721 {
 
