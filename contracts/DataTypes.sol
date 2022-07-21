@@ -3,12 +3,30 @@
 pragma solidity ^0.8.0;
 
 library DataTypes {
-    
+
     struct Blog {
-        string blogTitle;
+        uint256 blogId;
+        string blogname;
         string coverPicture;
-        string blogDescription;
         uint256 followers;
+
     }
 
+    struct Comment {
+        string idOfPost;
+        string content;
+        address authorId;
+        uint date;
+    }
+
+    struct Post {
+        string id;
+        string title;
+        string content;
+        string picture;
+        string video;
+        string username;
+        uint authorId;
+        uint date;
+    }
 }
