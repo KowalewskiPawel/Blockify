@@ -6,6 +6,7 @@ library DataTypes {
 
     struct Blog {
         uint256 blogId;
+        string blogDid;
         string blogname;
         string coverPicture;
         uint256 followers;

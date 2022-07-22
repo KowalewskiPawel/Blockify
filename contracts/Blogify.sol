@@ -65,10 +65,10 @@ contract Blogify is ERC721 {
             bytes(
                 string(
                     abi.encodePacked(
-                         '{"Username": "'
+                         '{"Blog Title": "'
                         ,
                         blogAttributes.blogname
-                        ,'","Member No: "',
+                        ,'","Blog No: "',
                         Strings.toString(_tokenId),
                         '", "description": "Blockify NFT", "image": "',
                         coverPicture,
@@ -95,7 +95,7 @@ contract Blogify is ERC721 {
         }
     }
 
-    function mintBlogNFT(string memory _blogname, string memory _coverPicture)
+    function mintBlogNFT(string memory _blogname, string memory _blogdid, string memory _coverPicture)
         external blognameExist(_blogname)
     {
         uint256 newBlogId = _blogId.current();
@@ -103,6 +103,7 @@ contract Blogify is ERC721 {
         
         DataTypes.Blog memory newBlog = DataTypes.Blog({
             blogId: newBlogId,
+            blogDid: 
             blogname: _blogname,
             coverPicture: _coverPicture,
             followers: 0
