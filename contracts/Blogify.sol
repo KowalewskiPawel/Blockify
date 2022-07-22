@@ -103,7 +103,7 @@ contract Blogify is ERC721 {
         
         DataTypes.Blog memory newBlog = DataTypes.Blog({
             blogId: newBlogId,
-            blogDid: 
+            blogDid: _blogdid,
             blogname: _blogname,
             coverPicture: _coverPicture,
             followers: 0
