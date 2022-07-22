@@ -9,7 +9,7 @@ import "./libraries/Base64.sol";
 
 import {DataTypes} from "./DataTypes.sol";
 
-contract Blogify is ERC721 {
+contract Blockify is ERC721 {
 
     using SafeMath for uint64;
     using Counters for Counters.Counter;
