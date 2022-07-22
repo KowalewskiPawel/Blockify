@@ -29,8 +29,7 @@ export const ConnectButton = () => {
     const signer = provider.getSigner();
     const contract = new ethers.Contract(
       contractAddress,
-      /* @ts-ignore */
-      BlockifyContract,
+      BlockifyContract.abi,
       signer
     );
     setBlockifyContract(contract);
