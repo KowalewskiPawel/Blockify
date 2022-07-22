@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import rehypeSanitize from "rehype-sanitize";
 
-const PostEditor = () => {
+export const PostEditor = () => {
   const [value, setValue] = useState<string | undefined>(
     `**Hello world!!!** <IFRAME SRC=\"javascript:javascript:alert(window.origin);\"></IFRAME>`
   );
@@ -18,5 +18,3 @@ const PostEditor = () => {
     </div>
   );
 };
-
-export { PostEditor };
