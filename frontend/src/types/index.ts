@@ -13,3 +13,9 @@ export interface Comment {
   commentAdded_authorId: string;
   commentAdded_date: string;
 }
+export interface BlogPost {
+  title: string;
+  name: string;
+  content: string;
+  date: string;
+}
