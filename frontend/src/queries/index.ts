@@ -7,12 +7,21 @@ export const client = createClient({
   url: APIURL,
 });
 
-export const getBlogs = `query ProfileNFTMinted {
-  blogNFTMinteds) {
+export const getBlogs = `query BlogNFTMinted {
+  blogNFTMinteds {
       blogId
       blogData_blogDid
       blogData_blogname
       blogData_coverPicture
+  }
+}`;
+
+export const getBlog = `query BlogNFTMinted($blogname: String! ) {
+  blogNFTMinteds (where: { blogData_blogname: $blogname }) {
+    blogId
+    blogData_blogDid
+    blogData_blogname
+    blogData_coverPicture
   }
 }`;
 
