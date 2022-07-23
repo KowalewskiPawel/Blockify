@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ConnectButton } from "../../components/ConnectButton";
 
 const Test = () => {
@@ -6,6 +6,7 @@ const Test = () => {
     <div>
       TEST
       <ConnectButton />
+      <Link to="/create-blog">Create Blog</Link>
     </div>
   );
 };

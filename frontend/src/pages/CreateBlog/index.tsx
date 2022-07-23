@@ -1,14 +1,22 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
+import { Web3Storage } from "web3.storage";
+import {
+  client,
+  getUserBlogs,
+  getBlogFollowers,
+  checkBlogname,
+} from "../../queries";
 import { BlockifyContext } from "../../context";
+import { Blog } from "../../types";
 
 const SignUpForm = () => {
-  const [blogs, setBlogs] = useState<string[]>();
+  const [blogs, setBlogs] = useState<Blog[]>();
   const [blogname, setBlogname] = useState<string>("");
-  const [blogPicture, setBlogPicture] = useState<string>("");
+  const [blogPicture, setBlogPicture] = useState<File | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { userAddress, blockifyContract, setSelectedBlog } =
+  const { blogDid, userAddress, blockifyContract, setSelectedBlog } =
     useContext(BlockifyContext);
 
   const submitHandler = (e: any) => {
@@ -18,53 +26,77 @@ const SignUpForm = () => {
 
   const profileCreate = async () => {
     setErrorMessage("");
+    if (!blogPicture) throw new Error("No picture selected");
     try {
-      //   const response = await client
-      //     .query(checkBlogname, { blogname: inputNameValue })
-      //     .toPromise();
-      //   setIsLoading(false);
-      //   if (response.data.profileNFTMinteds.length) {
-      //     setErrorMessage("Username already exists!");
-      //     return;
-      //   }
+      const storage = new Web3Storage({
+        /* @ts-ignore */
+        token: process.env.REACT_APP_WEB3_STORAGE,
+      });
 
-      const tx = await blockifyContract.mintBlogNFT(blogname, blogPicture);
+      const coverImageCid = await storage.put([blogPicture], {
+        maxRetries: 3,
+        wrapWithDirectory: false,
+      });
+
+      const imageCID = `https://${coverImageCid}.ipfs.dweb.link/`;
+      const response = await client
+        .query(checkBlogname, { blogname })
+        .toPromise();
+      setIsLoading(false);
+      if (response.data.blogNFTMinteds.length) {
+        setErrorMessage("Blogname already exists!");
+        return;
+      }
+
+      const tx = await blockifyContract.mintBlogNFT(
+        blogname,
+        blogDid,
+        imageCID
+      );
       await tx.wait();
     } catch (error) {
       console.error({ error });
     }
   };
 
-  //   useEffect(() => {
-  //     const fetchBlogs = async () => {
-  //       setIsLoading(true);
-  //       try {
-  //         const response = await client
-  //           .query(getUserBlogs, { address: userAddress })
-  //           .toPromise();
-  //         const addressBlogs = response.data.blogNFTMinteds;
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      setIsLoading(true);
+      try {
+        const response = await client
+          .query(getUserBlogs, { address: userAddress })
+          .toPromise();
+        const addressBlogs = response.data.blogNFTMinteds;
 
-  //         addressBlogs.forEach((blog: Blog, index: number) => {
-  //           client
-  //             .query(getFollowed, {
-  //               authorId: blog.blogId,
-  //             })
-  //             .toPromise();
-  //         });
+        addressBlogs.forEach((blog: Blog, index: number) => {
+          client
+            .query(getBlogFollowers, {
+              blogId: blog.blogId,
+            })
+            .toPromise()
+            .then(
+              (data) =>
+                (addressBlogs[index].followers = [
+                  data.data.blogFolloweds.map(
+                    (follower: any) => follower.follower
+                  ),
+                ])
+            );
+        });
 
-  //         setBlogs(addressBlogs);
-  //         setIsLoading(false);
-  //       } catch (error) {
-  //         console.error({ error });
-  //         setIsLoading(false);
-  //       }
-  //     };
-  //     if (userAddress) {
-  //       (async () => {
-  //         await fetchBlogs();
-  //       })();
-  //     }
-  //   }, [userAddress]);
+        setBlogs(addressBlogs);
+        setIsLoading(false);
+      } catch (error) {
+        console.error({ error });
+        setIsLoading(false);
+      }
+    };
+    if (userAddress) {
+      (async () => {
+        await fetchBlogs();
+      })();
+    }
+  }, [userAddress]);
 
   if (!userAddress) {
     return <p>Please Connect Wallet to login</p>;
@@ -79,15 +111,25 @@ const SignUpForm = () => {
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
         <div className="w-1/2 m-auto">
-          <label htmlFor="username" className="ml-2">
-            Username:
+          <label htmlFor="blogname" className="ml-2">
+            Blogname:
           </label>
           <input
-            name="username"
+            name="blogname"
             type="text"
             value={blogname}
             className="border-solid border-2 rounded-md m-2"
             onChange={(e) => setBlogname(e.target.value)}
+          />
+          <input
+            className="flex items-center justify-center w-full max-w-xs p-0 "
+            type="file"
+            multiple={false}
+            onChange={(event) =>
+              setBlogPicture(
+                event.target.files ? event.target.files[0] : undefined
+              )
+            }
           />
           <button className="bg-lime-400 p-1 border-solid border-black border-2 rounded-md">
             CREATE
@@ -102,18 +144,18 @@ const SignUpForm = () => {
             key={index}
             className="border-solid border-2 border-black p-4 m-auto w-1/3 rounded-md cursor-pointer"
             onClick={() => {
-              setSelectedBlog(element.blogId);
+              setSelectedBlog(element.blogData_blogname);
             }}
           >
             <p>
-              {element.blogData_blogPicture && (
+              {element.blogData_coverPicture && (
                 <img
-                  src={element.blogData_profilePicture}
-                  alt={element.blogData_username}
+                  src={element.blogData_coverPicture}
+                  alt={element.blogData_blogname}
                 />
               )}
               <br />
-              Username:
+              Title:
               <span className="font-bold">{element.blogData_blogname}</span>
             </p>
           </div>
