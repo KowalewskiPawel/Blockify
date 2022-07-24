@@ -76,11 +76,13 @@ export const BlogPage = () => {
             followedBlog: fetchedBlog.blogData_blogId,
           })
           .toPromise()
-          .then(
-            (data) =>
-              /* @ts-ignore */
-              (fetchedBlog.followers = data.blogFolloweds)
-          );
+          .then((data) => {
+            /* @ts-ignore */
+            const followerList = data.data.blogFolloweds.map(
+              (follower: any) => follower.follower
+            );
+            fetchedBlog.followers = followerList;
+          });
         setBlog(fetchedBlog);
         setIsLoading(false);
       } catch (error) {
@@ -143,7 +145,9 @@ export const BlogPage = () => {
                   onClick={followBlog}
                   disabled={blog.followers?.includes(userAddress)}
                 >
-                  Follow Blog
+                  {blog.followers?.includes(userAddress)
+                    ? "Followed"
+                    : "Follow Blog"}
                 </button>
               )}
             </p>
