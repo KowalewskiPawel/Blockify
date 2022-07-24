@@ -19,6 +19,7 @@ export const getBlogs = `query BlogNFTMinted {
 export const getBlog = `query BlogNFTMinted($blogname: String! ) {
   blogNFTMinteds (where: { blogData_blogname: $blogname }) {
     blogId
+    blogData_blogId
     blogData_blogDid
     blogData_blogname
     blogData_coverPicture
