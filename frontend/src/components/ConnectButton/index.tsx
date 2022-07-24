@@ -1,5 +1,8 @@
 import { useContext } from "react";
-import { useViewerConnection, EthereumAuthProvider } from "@self.id/framework";
+import {
+  useViewerConnection,
+  EthereumAuthProvider
+} from "@self.id/framework";
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import { ethers } from "ethers";
 import { BlockifyContext } from "../../context";
@@ -14,7 +17,8 @@ declare global {
 
 export const ConnectButton = () => {
   const [connection, connect, disconnect] = useViewerConnection();
-  const { setUserAddress, setBlockifyContract } = useContext(BlockifyContext);
+  const { setUserAddress, setBlockifyContract, setBlogDid } =
+    useContext(BlockifyContext);
 
   const connectWallet = async () => {
     const accounts = await window.ethereum.request({
@@ -23,7 +27,9 @@ export const ConnectButton = () => {
     /* @ts-ignore */
     setUserAddress(accounts[0]);
     /* @ts-ignore */
-    await connect(new EthereumAuthProvider(window.ethereum, accounts[0]));
+    await connect(new EthereumAuthProvider(window.ethereum, accounts[0])).then(
+      (data) => data?.id && setBlogDid(data?.id)
+    );
     /* @ts-ignore */
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();

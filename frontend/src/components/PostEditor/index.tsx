@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import MDEditor from "@uiw/react-md-editor";
 import rehypeSanitize from "rehype-sanitize";
 
-export const PostEditor = () => {
-  const [value, setValue] = useState<string | undefined>(
-    `**Hello world!!!** <IFRAME SRC=\"javascript:javascript:alert(window.origin);\"></IFRAME>`
-  );
+interface PostEditorProps {
+  value: string | undefined;
+  setValue: Dispatch<SetStateAction<string | undefined>>;
+}
+
+export const PostEditor = ({ value, setValue }: PostEditorProps) => {
   return (
     <div className="container">
       <MDEditor
