@@ -2,6 +2,7 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
@@ -9,7 +10,16 @@ import "./libraries/Base64.sol";
 
 import {DataTypes} from "./DataTypes.sol";
 
+interface BlockifyTokenInterface {
+  function createBlog() external;
+  function followBlog(address _caller, address _blogOwner) external;
+  function addCommentTransaction(address _caller, address _blogOwner) external;
+}
+
 contract Blockify is ERC721 {
+
+    address public TOKEN_ADDRESS;
+    BlockifyTokenInterface TokenContract;
 
     using SafeMath for uint64;
     using Counters for Counters.Counter;
@@ -30,7 +40,9 @@ contract Blockify is ERC721 {
     event CommentAdded(DataTypes.Comment commentAdded);
     event BlogFollowed(uint256 blogId, address follower);
     
-    constructor() ERC721("Blockify", "BGFY") {
+    constructor(address _tokenAddress) ERC721("Blockify", "BGFY") {
+        TOKEN_ADDRESS = _tokenAddress;
+        TokenContract = BlockifyTokenInterface(TOKEN_ADDRESS);
     }
 
     modifier isBlogOwner(uint256 _memberId) {
@@ -99,6 +111,7 @@ contract Blockify is ERC721 {
     function mintBlogNFT(string memory _blogname, string memory _blogdid, string memory _coverPicture)
         external blognameExist(_blogname)
     {
+        TokenContract.createBlog();
         uint256 newBlogId = _blogId.current();
         _safeMint(msg.sender, newBlogId);
         
@@ -119,8 +132,14 @@ contract Blockify is ERC721 {
     }
 
 
-    function addComment(string memory _commentToAdd, string memory _postId) external {
-        
+    function addComment(string memory _commentToAdd, string memory _postId, address _blogOwner, uint256 _blogsId) external {
+        string memory addressToString = Strings.toHexString(uint256(uint160(msg.sender)), 20);
+        string memory userToBlog = string(abi.encodePacked(addressToString,'-',Strings.toString(_blogsId)));
+        if (!isFollower[userToBlog]) {
+            revert("You have to be follower to comment");
+        }
+        TokenContract.followBlog(msg.sender, _blogOwner);
+
         DataTypes.Comment memory newComment = DataTypes.Comment({
             idOfPost: _postId,
             content: _commentToAdd,
@@ -136,7 +155,9 @@ contract Blockify is ERC721 {
         return postComments[_postId];
     }
 
-    function followBlog(uint256 _followedBlogId) external doesBlogIdExist(_followedBlogId) {
+    function followBlog(uint256 _followedBlogId, address _blogOwner) external doesBlogIdExist(_followedBlogId) {
+        TokenContract.addCommentTransaction(msg.sender, _blogOwner);
+
         string memory addressToString = Strings.toHexString(uint256(uint160(msg.sender)), 20);
         string memory userToBlog = string(abi.encodePacked(addressToString,'-',Strings.toString(_followedBlogId)));
 
