@@ -6,6 +6,7 @@ import {
   getBlogFollowers,
   checkBlogname,
 } from "../../queries";
+import { contractAddress } from "../../consts";
 import { BlockifyContext } from "../../context";
 import { Blog } from "../../types";
 
@@ -16,8 +17,13 @@ const SignUpForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const { blogDid, userAddress, blockifyContract, setSelectedBlog } =
-    useContext(BlockifyContext);
+  const {
+    blogDid,
+    userAddress,
+    blockifyContract,
+    blockifyTokenContract,
+    setSelectedBlog,
+  } = useContext(BlockifyContext);
 
   const submitHandler = (e: any) => {
     e.preventDefault();
@@ -47,6 +53,12 @@ const SignUpForm = () => {
         setErrorMessage("Blogname already exists!");
         return;
       }
+
+      const approveTx = await blockifyTokenContract.approve(
+        contractAddress,
+        10000
+      );
+      await approveTx.wait();
 
       const tx = await blockifyContract.mintBlogNFT(
         blogname,

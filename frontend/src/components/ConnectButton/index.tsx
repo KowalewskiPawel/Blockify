@@ -6,8 +6,9 @@ import {
 import { MetaMaskInpageProvider } from "@metamask/providers";
 import { ethers } from "ethers";
 import { BlockifyContext } from "../../context";
-import { contractAddress } from "../../consts";
+import { contractAddress, tokenAddress } from "../../consts";
 import BlockifyContract from "../../abi/Blockify.json";
+import BlockifyTokenContract from "../../abi/BlockifyToken.json";
 
 declare global {
   interface Window {
@@ -17,8 +18,12 @@ declare global {
 
 export const ConnectButton = () => {
   const [connection, connect, disconnect] = useViewerConnection();
-  const { setUserAddress, setBlockifyContract, setBlogDid } =
-    useContext(BlockifyContext);
+  const {
+    setUserAddress,
+    setBlockifyContract,
+    setBlockifyTokenContract,
+    setBlogDid,
+  } = useContext(BlockifyContext);
 
   const connectWallet = async () => {
     const accounts = await window.ethereum.request({
@@ -39,6 +44,12 @@ export const ConnectButton = () => {
       signer
     );
     setBlockifyContract(contract);
+    const tokenContract = new ethers.Contract(
+      tokenAddress,
+      BlockifyTokenContract.abi,
+      signer
+    );
+    setBlockifyTokenContract(tokenContract);
   };
 
   return connection.status === "connected" ? (
