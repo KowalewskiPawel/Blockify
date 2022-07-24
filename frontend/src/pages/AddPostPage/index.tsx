@@ -4,7 +4,8 @@ import MarkdownPreview from "@uiw/react-markdown-preview";
 import { useViewerRecord, usePublicRecord } from "@self.id/framework";
 import moment from "moment";
 import { Web3Storage } from "web3.storage";
-import { client, getBlog } from "../../queries";
+import { v4 as uuidv4 } from "uuid";
+import { client, getBlog, getPostComments } from "../../queries";
 import { Blog, BlogPost } from "../../types";
 import { BlockifyContext } from "../../context";
 import { PostEditor } from "../../components/PostEditor";
@@ -14,7 +15,7 @@ export const AddPostPage = () => {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>();
   const [uploadFile, setUploadFile] = useState<File | undefined>();
   const [fileCid, setFileCid] = useState<string>();
-  const [title, setTitle] = useState<string>();
+  const [title, setTitle] = useState<string>("");
   const [blogPost, setBlogPost] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState(false);
   const { blogname } = useParams();
@@ -49,16 +50,21 @@ export const AddPostPage = () => {
 
   const addPost = async () => {
     const post = {
+      postId: uuidv4(),
       title: title,
       name: record.content?.name,
       content: blogPost,
       date: moment().format("DD/MM/YYYY"),
     };
 
-    /* @ts-ignore */
-    await record.merge({
-      blogname: prevPosts ? [...prevPosts, post] : [post],
-    });
+    try {
+      /* @ts-ignore */
+      await record.merge({
+        blogname: prevPosts ? [...prevPosts, post] : [post],
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -85,6 +91,17 @@ export const AddPostPage = () => {
       : "No profile to load";
 
     if (postsList.content?.blogname) {
+      /* @ts-ignore */
+      posts.forEach((post: BlogPost, index: number) => {
+        client
+          .query(getPostComments, { postId: post.postId })
+          .toPromise()
+          .then(
+            (data) =>
+              /* @ts-ignore */
+              (posts[index].comments = [...data.data.commentAddeds])
+          );
+      });
       /* @ts-ignore */
       setBlogPosts(posts);
     }
