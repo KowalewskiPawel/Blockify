@@ -10,6 +10,7 @@ export const client = createClient({
 export const getBlogs = `query BlogNFTMinted {
   blogNFTMinteds {
       blogId
+      blogData_blogId
       blogData_blogOwner
       blogData_blogDid
       blogData_blogname
