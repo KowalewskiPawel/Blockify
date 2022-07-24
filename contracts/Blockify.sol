@@ -20,6 +20,7 @@ contract Blockify is ERC721 {
     mapping(string => DataTypes.Comment[]) public postComments;
     mapping(uint256 => address) public blogsOwners;
     mapping(uint256 => address[]) public blogFollowers;
+    mapping(string => bool) public isFollower;
     mapping(string => DataTypes.Comment[]) public blogComments;
     mapping(uint256 => bool) public doesBlogExist;
     mapping(string => bool) public doesBlognameExist;
@@ -27,7 +28,7 @@ contract Blockify is ERC721 {
     event BlogNFTMinted(address sender, uint256 blogId, DataTypes.Blog blogData);
     event PostAdded(DataTypes.Post postAdded);
     event CommentAdded(DataTypes.Comment commentAdded);
-    event BlogFollowed(address follower);
+    event BlogFollowed(uint256 blogId, address follower);
     
     constructor() ERC721("Blockify", "BGFY") {
     }
@@ -136,8 +137,16 @@ contract Blockify is ERC721 {
     }
 
     function followBlog(uint256 _followedBlogId) external doesBlogIdExist(_followedBlogId) {
+        string memory addressToString = Strings.toHexString(uint256(uint160(msg.sender)), 20);
+        string memory userToBlog = string(abi.encodePacked(addressToString,'-',Strings.toString(_followedBlogId)));
+
+        if (isFollower[userToBlog]) {
+            revert("You are already a follower");
+        }
+
+        isFollower[userToBlog] = true; 
         blogFollowers[_followedBlogId].push(msg.sender);
-        emit BlogFollowed(msg.sender);
+        emit BlogFollowed(_followedBlogId, msg.sender);
     }
 
     function getBlogFollowers(uint256 _blogFollowersId) public view doesBlogIdExist(_blogFollowersId) returns(address[] memory) {
