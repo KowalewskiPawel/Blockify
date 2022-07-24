@@ -6,6 +6,7 @@ export interface Blog {
   blogData_coverPicture: string;
   blogData_followers: string;
   blogId: string;
+  followers?: string[];
   __typename: string;
 }
 
