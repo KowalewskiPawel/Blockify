@@ -114,6 +114,7 @@ contract Blockify is ERC721 {
         _safeMint(msg.sender, newBlogId);
         
         DataTypes.Blog memory newBlog = DataTypes.Blog({
+            blogOwner: msg.sender,
             blogId: newBlogId,
             blogDid: _blogdid,
             blogname: _blogname,
