@@ -1,4 +1,5 @@
 export interface Blog {
+  blogData_blogOwner: string;
   blogData_blogId: string;
   blogData_blogDid: string;
   blogData_blogname: string;

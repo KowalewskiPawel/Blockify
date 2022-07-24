@@ -18,8 +18,8 @@ interface BlockifyTokenInterface {
 
 contract Blockify is ERC721 {
 
-    address public TOKEN_ADDRESS;
-    BlockifyTokenInterface TokenContract;
+    address public constant TOKEN_ADDRESS = 0x9460802a8a65B3de37F0D93539Ffdb57BBf52BF2;
+    BlockifyTokenInterface TokenContract = BlockifyTokenInterface(TOKEN_ADDRESS);
 
     using SafeMath for uint64;
     using Counters for Counters.Counter;
@@ -40,9 +40,7 @@ contract Blockify is ERC721 {
     event CommentAdded(DataTypes.Comment commentAdded);
     event BlogFollowed(uint256 blogId, address follower);
     
-    constructor(address _tokenAddress) ERC721("Blockify", "BGFY") {
-        TOKEN_ADDRESS = _tokenAddress;
-        TokenContract = BlockifyTokenInterface(TOKEN_ADDRESS);
+    constructor() ERC721("Blockify", "BGFY") {
     }
 
     modifier isBlogOwner(uint256 _memberId) {
@@ -116,6 +114,7 @@ contract Blockify is ERC721 {
         _safeMint(msg.sender, newBlogId);
         
         DataTypes.Blog memory newBlog = DataTypes.Blog({
+            blogOwner: msg.sender,
             blogId: newBlogId,
             blogDid: _blogdid,
             blogname: _blogname,
