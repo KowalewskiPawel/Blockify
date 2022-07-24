@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { useViewerRecord, usePublicRecord } from "@self.id/framework";
 import moment from "moment";
+import { Web3Storage } from "web3.storage";
 import { client, getBlog } from "../../queries";
 import { Blog, BlogPost } from "../../types";
 import { BlockifyContext } from "../../context";
@@ -11,6 +12,8 @@ import { PostEditor } from "../../components/PostEditor";
 export const AddPostPage = () => {
   const [blog, setBlog] = useState<Blog>();
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>();
+  const [uploadFile, setUploadFile] = useState<File | undefined>();
+  const [fileCid, setFileCid] = useState<string>();
   const [title, setTitle] = useState<string>();
   const [blogPost, setBlogPost] = useState<string | undefined>();
   const [isLoading, setIsLoading] = useState(false);
@@ -21,9 +24,28 @@ export const AddPostPage = () => {
     "basicProfile",
     blog?.blogData_blogDid || ""
   );
-
   /* @ts-ignore */
   const prevPosts: BlogPost[] = record.content?.blogname;
+
+  const uploadToIpfs = async () => {
+    if (!uploadFile) throw new Error("No file selected");
+    try {
+      const storage = new Web3Storage({
+        /* @ts-ignore */
+        token: process.env.REACT_APP_WEB3_STORAGE,
+      });
+
+      const uploadedFileCid = await storage.put([uploadFile], {
+        maxRetries: 3,
+        wrapWithDirectory: false,
+      });
+
+      const readyCID = `https://${uploadedFileCid}.ipfs.dweb.link/`;
+      setFileCid(readyCID);
+    } catch (error) {
+      console.error({ error });
+    }
+  };
 
   const addPost = async () => {
     const post = {
@@ -84,6 +106,27 @@ export const AddPostPage = () => {
             className="border-solid border-2 rounded-md m-2"
             onChange={(e) => setTitle(e.target.value)}
           />
+          <br />
+          <div>
+            <label htmlFor="upload-file" className="ml-2">
+              Upload File to IPFS
+            </label>
+            <input
+              className="flex items-center justify-center w-full max-w-xs p-0 "
+              name="upload-file"
+              type="file"
+              multiple={false}
+              onChange={(event) =>
+                setUploadFile(
+                  event.target.files ? event.target.files[0] : undefined
+                )
+              }
+            />
+            <button disabled={uploadFile === undefined} onClick={uploadToIpfs}>
+              UPLOAD
+            </button>
+            {fileCid && <p>Uploaded file CID: {fileCid}</p>}
+          </div>
           <PostEditor value={blogPost} setValue={setBlogPost} />
           <button
             disabled={!record.isMutable || record.isMutating}
