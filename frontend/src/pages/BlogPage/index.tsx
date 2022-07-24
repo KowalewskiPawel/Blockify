@@ -2,7 +2,13 @@ import { useState, useEffect, useContext } from "react";
 import { Link, useParams } from "react-router-dom";
 import MarkdownPreview from "@uiw/react-markdown-preview";
 import { usePublicRecord } from "@self.id/framework";
-import { client, getBlog, getPostComments } from "../../queries";
+import { contractAddress } from "../../consts";
+import {
+  client,
+  getBlog,
+  getPostComments,
+  getBlogFollowers,
+} from "../../queries";
 import { Blog, BlogPost } from "../../types";
 import { BlockifyContext } from "../../context";
 import moment from "moment";
@@ -13,7 +19,7 @@ export const BlogPage = () => {
   const [commentInput, setCommentInput] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const { blogname } = useParams();
-  const { blogDid, blockifyContract, userAddress } =
+  const { blogDid, blockifyContract, blockifyTokenContract, userAddress } =
     useContext(BlockifyContext);
   const postsList = usePublicRecord(
     "basicProfile",
@@ -22,7 +28,18 @@ export const BlogPage = () => {
 
   const submitComment = async (postId: string) => {
     try {
-      const tx = await blockifyContract.addComment(commentInput, postId);
+      const approveTx = await blockifyTokenContract.approve(
+        contractAddress,
+        10000
+      );
+      await approveTx.wait();
+
+      const tx = await blockifyContract.addComment(
+        commentInput,
+        postId,
+        blog?.blogData_blogOwner,
+        blog?.blogData_blogId
+      );
       await tx.wait();
     } catch (error) {
       console.error({ error });
@@ -31,8 +48,15 @@ export const BlogPage = () => {
 
   const followBlog = async () => {
     try {
+      const approveTx = await blockifyTokenContract.approve(
+        contractAddress,
+        10000
+      );
+      await approveTx.wait();
+
       const tx = await blockifyContract.followBlog(
-        Number(blog?.blogData_blogId)
+        Number(blog?.blogData_blogId),
+        blog?.blogData_blogOwner
       );
       await tx.wait();
     } catch (error) {
@@ -45,7 +69,21 @@ export const BlogPage = () => {
       setIsLoading(true);
       try {
         const response = await client.query(getBlog, { blogname }).toPromise();
-        setBlog(response.data.blogNFTMinteds[0]);
+        const fetchedBlog: Blog = response.data.blogNFTMinteds[0];
+
+        client
+          .query(getBlogFollowers, {
+            followedBlog: fetchedBlog.blogData_blogId,
+          })
+          .toPromise()
+          .then((data) => {
+            /* @ts-ignore */
+            const followerList = data.data.blogFolloweds.map(
+              (follower: any) => follower.follower
+            );
+            fetchedBlog.followers = followerList;
+          });
+        setBlog(fetchedBlog);
         setIsLoading(false);
       } catch (error) {
         console.error({ error });
@@ -103,7 +141,14 @@ export const BlogPage = () => {
               <span className="font-bold">{blog.blogData_blogname}</span>
               <br />
               {userAddress && blockifyContract && (
-                <button onClick={followBlog}>Follow Blog</button>
+                <button
+                  onClick={followBlog}
+                  disabled={blog.followers?.includes(userAddress)}
+                >
+                  {blog.followers?.includes(userAddress)
+                    ? "Followed"
+                    : "Follow Blog"}
+                </button>
               )}
             </p>
           </div>
@@ -115,23 +160,25 @@ export const BlogPage = () => {
                 <p>Author: {post.name}</p>
                 <p>Date: {post.date}</p>
                 <p>Comments: {post.comments?.length}</p>
-                {blockifyContract && userAddress && (
-                  <div style={{ margin: "10px" }}>
-                    <label>
-                      Comment:
-                      <input
-                        name="comment"
-                        type="text"
-                        placeholder="Enter your comment"
-                        value={commentInput}
-                        onChange={(e) => setCommentInput(e.target.value)}
-                      />
-                    </label>
-                    <button onClick={() => submitComment(post.postId)}>
-                      Submit
-                    </button>
-                  </div>
-                )}
+                {blockifyContract &&
+                  userAddress &&
+                  blog.followers?.includes(userAddress) && (
+                    <div style={{ margin: "10px" }}>
+                      <label>
+                        Comment:
+                        <input
+                          name="comment"
+                          type="text"
+                          placeholder="Enter your comment"
+                          value={commentInput}
+                          onChange={(e) => setCommentInput(e.target.value)}
+                        />
+                      </label>
+                      <button onClick={() => submitComment(post.postId)}>
+                        Submit
+                      </button>
+                    </div>
+                  )}
                 {post.comments && (
                   <div>
                     {post.comments.map((comment: any, index: number) => (

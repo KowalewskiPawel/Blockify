@@ -7,7 +7,6 @@ import { ConnectButton } from "../../components/ConnectButton";
 const Test = () => {
   const [fetchedBlogs, setFetchedBlogs] = useState<Blog[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -15,15 +14,6 @@ const Test = () => {
       try {
         const response = await client.query(getBlogs).toPromise();
         const blogsArray: Blog[] = [...response.data.blogNFTMinteds];
-        // blogsArray.forEach((blog, index) => {
-        //   client
-        //     .query(getPostComments, { postId: post.postAdded_id })
-        //     .toPromise()
-        //     .then(
-        //       (data) =>
-        //         (postsArray[index].comments = data.data.commentAddeds?.length)
-        //     );
-        // });
         setFetchedBlogs(blogsArray);
         setIsLoading(false);
       } catch (error) {
