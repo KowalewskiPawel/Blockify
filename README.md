@@ -1,5 +1,15 @@
-<br />
-<h1 align="center">Blockify</h1>
+<h1>
+<p align="center">
+  <img src="./frontend/public/logo192.png" width="150" height="150">
+  <br>Blockify
+</h1>
+  <p align="center">
+    Take back the ownership of your social content on-chain, and generate a passive income! :)
+    <br />
+    </p>
+</p>
+</br>
+</br>
 
 ## About The Project
 
