@@ -125,10 +125,7 @@ export const BlogPage = () => {
         <div>Loading</div>
       ) : blog ? (
         <>
-          {blogDid === blog.blogData_blogDid && (
-            <Link to={`../add-post/${blog.blogData_blogname}`}>Add Post</Link>
-          )}
-          <div className="border-solid border-2 border-black p-4 m-auto w-1/3 rounded-md cursor-pointer">
+          <div className="border-solid border-2 border-black p-4 m-auto mx-10 w-11/12 rounded-md">
             <p>
               {blog.blogData_coverPicture && (
                 <img
@@ -144,6 +141,7 @@ export const BlogPage = () => {
                 <button
                   onClick={followBlog}
                   disabled={blog.followers?.includes(userAddress)}
+                  className="inline-block px-6 my-4 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
                 >
                   {blog.followers?.includes(userAddress)
                     ? "Followed"
@@ -151,56 +149,62 @@ export const BlogPage = () => {
                 </button>
               )}
             </p>
-          </div>
-          {blogPosts &&
-            blogPosts.map((post: BlogPost, index: number) => (
-              <div key={index}>
-                <h4>{post.title}</h4>
-                <MarkdownPreview source={post.content} />
-                <p>Author: {post.name}</p>
-                <p>Date: {post.date}</p>
-                <p>Comments: {post.comments?.length}</p>
-                {blockifyContract &&
-                  userAddress &&
-                  blog.followers?.includes(userAddress) && (
-                    <div style={{ margin: "10px" }}>
-                      <label>
-                        Comment:
-                        <input
-                          name="comment"
-                          type="text"
-                          placeholder="Enter your comment"
-                          value={commentInput}
-                          onChange={(e) => setCommentInput(e.target.value)}
-                        />
-                      </label>
-                      <button onClick={() => submitComment(post.postId)}>
-                        Submit
-                      </button>
+            {blogPosts &&
+              blogPosts.map((post: BlogPost, index: number) => (
+                <div
+                  key={index}
+                  className="border-solid border-2 border-black p-4 m-auto mt-4 mb-4 w-11/12 rounded-md"
+                >
+                  <h4>{post.title}</h4>
+                  <MarkdownPreview source={post.content} />
+                  <p>Author: {post.name}</p>
+                  <p>Date: {post.date}</p>
+                  <p>Comments: {post.comments?.length}</p>
+                  {blockifyContract &&
+                    userAddress &&
+                    blog.followers?.includes(userAddress) && (
+                      <div style={{ margin: "10px" }}>
+                        <label>
+                          Comment:
+                          <input
+                            name="comment"
+                            type="text"
+                            placeholder="Enter your comment"
+                            value={commentInput}
+                            onChange={(e) => setCommentInput(e.target.value)}
+                          />
+                        </label>
+                        <button
+                          onClick={() => submitComment(post.postId)}
+                          className="inline-block px-6 my-4 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+                        >
+                          Submit
+                        </button>
+                      </div>
+                    )}
+                  {post.comments && (
+                    <div>
+                      {post.comments.map((comment: any, index: number) => (
+                        <div key={index} style={{ fontSize: "12px" }}>
+                          <p>{comment.commentAdded_content}</p>
+                          <p style={{ fontWeight: "bold" }}>
+                            Author: {comment.commentAdded_authorId}{" "}
+                          </p>
+                          <p>
+                            Date:
+                            <span>
+                              {moment
+                                .unix(Number(comment.commentAdded_date))
+                                .format("DD/MM/YYYY")}
+                            </span>
+                          </p>
+                        </div>
+                      ))}
                     </div>
                   )}
-                {post.comments && (
-                  <div>
-                    {post.comments.map((comment: any, index: number) => (
-                      <div key={index} style={{ fontSize: "12px" }}>
-                        <p>{comment.commentAdded_content}</p>
-                        <p style={{ fontWeight: "bold" }}>
-                          Author: {comment.commentAdded_authorId}{" "}
-                        </p>
-                        <p>
-                          Date:
-                          <span>
-                            {moment
-                              .unix(Number(comment.commentAdded_date))
-                              .format("DD/MM/YYYY")}
-                          </span>
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+                </div>
+              ))}
+          </div>
         </>
       ) : (
         <p>No Blog found</p>
