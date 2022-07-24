@@ -88,7 +88,7 @@ run `npx hardhat compile` command.
 4. Run `yarn start` to start the project
 
 ## This project has been created during HACKFS22 Hackathon
-[Blockify - ETH Global Showcase]()
+[Blockify - ETH Global Showcase](https://ethglobal.com/showcase/blockify-u0ou2)
 
 ### Live Preview
 
