@@ -118,7 +118,7 @@ const SignUpForm = () => {
     <div className="pt-28">
       <form
         onSubmit={submitHandler}
-        className="border-solid border-2 border-black p-4 m-auto mb-4 w-1/3 rounded-md"
+        className="border-solid border-2 border-black p-4 m-auto mb-4 w-1/2 rounded-md"
       >
         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
@@ -143,8 +143,8 @@ const SignUpForm = () => {
               )
             }
           />
-          <button className="bg-lime-400 p-1 border-solid border-black border-2 rounded-md">
-            CREATE
+          <button className="inline-block px-6 my-4 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">
+            Create Blog
           </button>
         </div>
       </form>
@@ -154,7 +154,7 @@ const SignUpForm = () => {
         blogs.map((element: Blog, index: number) => (
           <div
             key={index}
-            className="border-solid border-2 border-black p-4 m-auto w-1/3 rounded-md cursor-pointer"
+            className="border-solid border-2 border-black p-4 m-auto w-1/2 rounded-md cursor-pointer"
             onClick={() => {
               setSelectedBlog(element.blogData_blogname);
             }}

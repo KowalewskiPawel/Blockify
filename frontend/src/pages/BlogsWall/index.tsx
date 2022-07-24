@@ -2,9 +2,8 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { client, getBlogs } from "../../queries";
 import { Blog } from "../../types";
-import { ConnectButton } from "../../components/ConnectButton";
 
-const Test = () => {
+export const BlogsWall = () => {
   const [fetchedBlogs, setFetchedBlogs] = useState<Blog[] | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -25,17 +24,14 @@ const Test = () => {
   }, []);
 
   return (
-    <div>
-      TEST
-      <ConnectButton />
-      <Link to="/create-blog">Create Blog</Link>
+    <div className="w-full pt-28">
       {isLoading ? (
         <div>Loading</div>
       ) : fetchedBlogs ? (
         fetchedBlogs.map((element: Blog, index: number) => (
           <div
             key={index}
-            className="border-solid border-black border-2 w-1/3 p-4 m-auto mb-4 rounded-md"
+            className="border-solid border-black border-2 w-11/12 p-4 m-auto mb-4 rounded-md"
           >
             <Link to={`blog/${element.blogData_blogname}`}>
               <h4 className="font-bold">{element.blogData_blogname}</h4>
@@ -53,5 +49,3 @@ const Test = () => {
     </div>
   );
 };
-
-export { Test };

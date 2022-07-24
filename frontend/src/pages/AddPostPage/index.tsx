@@ -112,7 +112,7 @@ export const AddPostPage = () => {
       {isLoading ? (
         <div>Loading</div>
       ) : blog && blogDid === blog.blogData_blogDid ? (
-        <>
+        <div className="border-solid border-2 border-black p-4 m-auto w-11/12 rounded-md">
           <label htmlFor="title" className="ml-2">
             Title:
           </label>
@@ -139,13 +139,18 @@ export const AddPostPage = () => {
                 )
               }
             />
-            <button disabled={uploadFile === undefined} onClick={uploadToIpfs}>
+            <button
+              disabled={uploadFile === undefined}
+              onClick={uploadToIpfs}
+              className="inline-block px-6 my-4 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+            >
               UPLOAD
             </button>
             {fileCid && <p>Uploaded file CID: {fileCid}</p>}
           </div>
           <PostEditor value={blogPost} setValue={setBlogPost} />
           <button
+            className="inline-block px-6 my-4 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
             disabled={!record.isMutable || record.isMutating}
             onClick={addPost}
           >
@@ -160,7 +165,7 @@ export const AddPostPage = () => {
                 <p>Date: {post.date}</p>
               </div>
             ))}
-        </>
+        </div>
       ) : (
         <p>Not authorized to add post</p>
       )}
