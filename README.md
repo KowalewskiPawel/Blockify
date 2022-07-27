@@ -87,9 +87,6 @@ run `npx hardhat compile` command.
 3. Create `.env` and add `REACT_APP_WEB3_STORAGE=<WEB3_STORAGE_API_KEY>`
 4. Run `yarn start` to start the project
 
-## This project has been created during HACKFS22 Hackathon
-[Blockify - ETH Global Showcase](https://ethglobal.com/showcase/blockify-u0ou2)
-
 ### Live Preview
 
 [Blockify](https://kowalewskipawel.github.io/Blockify/)
