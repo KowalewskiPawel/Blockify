@@ -1,7 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
-  "homepage": ".",
+  "homepage": "https://kowalewskipawel.github.io/Blockify/",
   "private": true,
   "dependencies": {
     "@metamask/providers": "^9.0.0",
