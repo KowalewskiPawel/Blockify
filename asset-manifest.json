@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "./static/css/main.8f8a4aa4.css",
-    "main.js": "./static/js/main.ff443683.js",
-    "static/js/799.2c0a49b0.chunk.js": "./static/js/799.2c0a49b0.chunk.js",
-    "static/js/63.b0206036.chunk.js": "./static/js/63.b0206036.chunk.js",
-    "index.html": "./index.html",
-    "main.8f8a4aa4.css.map": "./static/css/main.8f8a4aa4.css.map",
-    "main.ff443683.js.map": "./static/js/main.ff443683.js.map",
-    "63.b0206036.chunk.js.map": "./static/js/63.b0206036.chunk.js.map"
+    "main.css": "/Blockify/static/css/main.8f8a4aa4.css",
+    "main.js": "/Blockify/static/js/main.d2f68c4a.js",
+    "static/js/799.2c0a49b0.chunk.js": "/Blockify/static/js/799.2c0a49b0.chunk.js",
+    "static/js/63.1c6ae8b1.chunk.js": "/Blockify/static/js/63.1c6ae8b1.chunk.js",
+    "index.html": "/Blockify/index.html",
+    "main.8f8a4aa4.css.map": "/Blockify/static/css/main.8f8a4aa4.css.map",
+    "main.d2f68c4a.js.map": "/Blockify/static/js/main.d2f68c4a.js.map",
+    "63.1c6ae8b1.chunk.js.map": "/Blockify/static/js/63.1c6ae8b1.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.8f8a4aa4.css",
-    "static/js/main.ff443683.js"
+    "static/js/main.d2f68c4a.js"
   ]
 }
