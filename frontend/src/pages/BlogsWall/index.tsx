@@ -38,32 +38,6 @@ export const BlogsWall = () => {
   }, []);
 
   return (
-    // <div classNameName="w-full pt-28">
-    //   {isLoading ? (
-    //     <div>Loading</div>
-    //   ) : fetchedBlogs ? (
-    //     fetchedBlogs.map((element: Blog, index: number) => (
-    //       <div
-    //         key={index}
-    //         classNameName="border-solid border-black border-2 w-11/12 p-4 m-auto mb-4 rounded-md"
-    //       >
-    //         <Link to={`blog/${element.blogData_blogname}`}>
-    //           <h4 classNameName="font-bold">{element.blogData_blogname}</h4>
-    //         </Link>
-    //         <br />
-    //         <img
-    //           src={element.blogData_coverPicture}
-    //           alt={element.blogData_blogname}
-    //         />
-    //         <br />
-    //         <p>Followers: {element.followers?.length}</p>
-    //       </div>
-    //     ))
-    //   ) : (
-    //     <div>There are no Blogs to show</div>
-    //   )}
-    // </div>
-
     <div className="py-16">
       <div className="container m-auto px-6 text-gray-600 md:px-12 xl:px-6">
         <div className="mb-12 space-y-2 text-center">
