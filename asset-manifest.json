@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/Blockify/static/css/main.8f8a4aa4.css",
-    "main.js": "/Blockify/static/js/main.d2f68c4a.js",
+    "main.css": "/Blockify/static/css/main.eec9554d.css",
+    "main.js": "/Blockify/static/js/main.caa8b9c8.js",
     "static/js/799.2c0a49b0.chunk.js": "/Blockify/static/js/799.2c0a49b0.chunk.js",
     "static/js/63.1c6ae8b1.chunk.js": "/Blockify/static/js/63.1c6ae8b1.chunk.js",
     "index.html": "/Blockify/index.html",
-    "main.8f8a4aa4.css.map": "/Blockify/static/css/main.8f8a4aa4.css.map",
-    "main.d2f68c4a.js.map": "/Blockify/static/js/main.d2f68c4a.js.map",
+    "main.eec9554d.css.map": "/Blockify/static/css/main.eec9554d.css.map",
+    "main.caa8b9c8.js.map": "/Blockify/static/js/main.caa8b9c8.js.map",
     "63.1c6ae8b1.chunk.js.map": "/Blockify/static/js/63.1c6ae8b1.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.8f8a4aa4.css",
-    "static/js/main.d2f68c4a.js"
+    "static/css/main.eec9554d.css",
+    "static/js/main.caa8b9c8.js"
   ]
 }
