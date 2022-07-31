@@ -10,7 +10,10 @@ const App = () => {
     <>
       <Navbar />
       <Routes>
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route
+          path="*"
+          element={<Navigate to={window.location.hostname} replace />}
+        />
         <Route path="/" element={<BlogsWall />} />
         <Route path="/create-blog" element={<SignUpForm />} />
         <Route path="blog/:blogname" element={<BlogPage />} />
