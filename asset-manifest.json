@@ -1,16 +1,16 @@
 {
   "files": {
-    "main.css": "/Blockify/static/css/main.eec9554d.css",
-    "main.js": "/Blockify/static/js/main.caa8b9c8.js",
+    "main.css": "/Blockify/static/css/main.23875a27.css",
+    "main.js": "/Blockify/static/js/main.8f981c0d.js",
     "static/js/799.2c0a49b0.chunk.js": "/Blockify/static/js/799.2c0a49b0.chunk.js",
     "static/js/63.1c6ae8b1.chunk.js": "/Blockify/static/js/63.1c6ae8b1.chunk.js",
     "index.html": "/Blockify/index.html",
-    "main.eec9554d.css.map": "/Blockify/static/css/main.eec9554d.css.map",
-    "main.caa8b9c8.js.map": "/Blockify/static/js/main.caa8b9c8.js.map",
+    "main.23875a27.css.map": "/Blockify/static/css/main.23875a27.css.map",
+    "main.8f981c0d.js.map": "/Blockify/static/js/main.8f981c0d.js.map",
     "63.1c6ae8b1.chunk.js.map": "/Blockify/static/js/63.1c6ae8b1.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.eec9554d.css",
-    "static/js/main.caa8b9c8.js"
+    "static/css/main.23875a27.css",
+    "static/js/main.8f981c0d.js"
   ]
 }
