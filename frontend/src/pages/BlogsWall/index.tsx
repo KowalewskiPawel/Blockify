@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { client, getBlogFollowers, getBlogs } from "../../queries";
 import { Blog } from "../../types";
+import BlockifyLogo from "../../assets/logo192.png";
 
 export const BlogsWall = () => {
   const [fetchedBlogs, setFetchedBlogs] = useState<Blog[] | null>(null);
@@ -41,9 +42,17 @@ export const BlogsWall = () => {
     <div className="py-16">
       <div className="container m-auto px-6 text-gray-600 md:px-12 xl:px-6">
         <div className="mb-12 space-y-2 text-center">
-          <h2 className="text-2xl text-cyan-900 font-bold md:text-4xl">
-            Blockify
-          </h2>
+          <div className="flex justify-center">
+            <img
+              data-tooltip-target="tooltip-jese"
+              className="w-10 h-10 rounded"
+              src={BlockifyLogo}
+              alt="Medium avatar"
+            />
+            <h2 className="text-2xl text-cyan-900 font-bold md:text-4xl">
+              Blockify
+            </h2>
+          </div>
           <p className="lg:w-6/12 lg:mx-auto">
             {isLoading ? (
               <div role="status">
