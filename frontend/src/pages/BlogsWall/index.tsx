@@ -50,9 +50,12 @@ export const BlogsWall = () => {
         </div>
 
         {!isLoading && fetchedBlogs ? (
-          fetchedBlogs.map((element: Blog, index: number) => (
-            <div key={index} className="grid gap-12 lg:grid-cols-2 m-4">
-              <div className="p-1 rounded-xl group sm:flex space-x-6 bg-white bg-opacity-50 shadow-xl hover:rounded-2xl">
+          <div className="grid gap-12 lg:grid-cols-2 m-4">
+            {fetchedBlogs.map((element: Blog, index: number) => (
+              <div
+                key={index}
+                className="p-1 rounded-xl group sm:flex space-x-6 bg-white bg-opacity-50 shadow-xl hover:rounded-2xl"
+              >
                 <img
                   src={element.blogData_coverPicture}
                   alt={element.blogData_blogname}
@@ -82,8 +85,8 @@ export const BlogsWall = () => {
                   </div>
                 </div>
               </div>
-            </div>
-          ))
+            ))}
+          </div>
         ) : (
           <h2 className="text-2xl text-cyan-900 font-bold md:text-4xl">
             There are no blogs to show
