@@ -58,23 +58,31 @@ export const ConnectButton = () => {
   };
 
   if (isConnecting) {
-    return <span>Connecting...</span>;
+    return (
+      <span className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
+        Connecting...
+      </span>
+    );
   }
 
   return connection?.status === "connected" ? (
-    <button onClick={disconnect}>
+    <button
+      className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
+      onClick={disconnect}
+    >
       Disconnect {connection?.selfID.id.substring(0, 8)}...
       {connection?.selfID.id.substring(60)}
     </button>
   ) : "ethereum" in window ? (
     <button
+      className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
       disabled={connection?.status === "connecting"}
       onClick={connectWallet}
     >
       Connect
     </button>
   ) : (
-    <p>
+    <p className="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-gray-400 md:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
       An injected Ethereum provider such as{" "}
       <a href="https://metamask.io/">MetaMask</a> is needed to authenticate.
     </p>
