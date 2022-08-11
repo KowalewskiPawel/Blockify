@@ -13,7 +13,7 @@
 
 ## About The Project
 
-Blockify is a decentralised Platform as a Service, for creating fully decentralised blogs, and gives ownership only to the creator. In this way, you can be sure that you will not lose your conent, even if the application ever goes down still the data will be persisted on the blockchain, Ceramic Protocol, and IPFS. Moreover, to help creators create a passive income from their posts, and incentivize users to use the platform, some actions require pay in Blockify Tokens that are of ERC-20 standard. In this way, the platform can easily generate income for all, maintainers, creators, and even followers. However, to read the blogs, posts, and comments, there is no need to register, pay, or even have a crypto wallet.
+Blockify is a decentralized Platform as a Service, for creating fully decentralized blogs. Everyone can be sure that the content won't be lost, even if the application ever goes down still the data will be persisted on the blockchain, Ceramic Protocol, and IPFS. Moreover, to help creators create a passive income from their posts, and incentivize users to use the platform, some actions require pay in Blockify Tokens that are of ERC-20 standard. In this way, the platform can easily generate income for all, maintainers, creators, and even followers. However, to read the blogs, posts, and comments, there is no need to register, pay, or even have a crypto wallet.
 
 The platform works in the following way:
 
